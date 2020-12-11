@@ -28,13 +28,13 @@ const DynamicStep = ({
                 ...stepValues,
               }) ? null : (
                 <DynamicInput
+                  {...componentProps}
                   key={componentProps.name}
                   id={stepId[0]}
                   register={register}
                   control={control}
                   errors={errors}
                   multiStepIndex={isMulti && (parseInt(stepId[1]) - 1 || 0)}
-                  {...componentProps}
                 />
               )
             ) : (
