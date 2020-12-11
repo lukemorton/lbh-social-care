@@ -1,19 +1,23 @@
 import { act, fireEvent, render } from '@testing-library/react';
 
 jest.mock('next/router', () => ({
-  replace: jest.fn(),
+  useRouter: () => ({
+    replace: jest.fn(),
+  }),
 }));
 
-import SearchForm from './SearchForm';
+import SearchResidentsForm from './SearchResidentsForm';
 
-describe(`SearchForm`, () => {
+describe(`SearchResidentsForm`, () => {
   const props = {
     onFormSubmit: jest.fn(),
     query: {},
   };
 
   it('should pass to onFormSubmit the form values', async () => {
-    const { getByRole, getByLabelText } = render(<SearchForm {...props} />);
+    const { getByRole, getByLabelText } = render(
+      <SearchResidentsForm {...props} />
+    );
 
     const firstNameInput = getByLabelText('First name:');
     fireEvent.change(firstNameInput, { target: { value: 'foo' } });
@@ -31,7 +35,7 @@ describe(`SearchForm`, () => {
 
   it('should initialise the form with the passed query', async () => {
     const { getByRole } = render(
-      <SearchForm {...props} query={{ first_name: 'bar' }} />
+      <SearchResidentsForm {...props} query={{ first_name: 'bar' }} />
     );
     await act(async () => {
       fireEvent.submit(getByRole('form'));

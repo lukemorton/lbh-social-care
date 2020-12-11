@@ -6,7 +6,8 @@ import { useBeforeunload } from 'react-beforeunload';
 
 import DynamicStep from 'components/DynamicStep/DynamicStep';
 import Breadcrumbs from 'components/Breadcrumbs/Breadcrumbs';
-import { createSteps, getNextStepPath } from 'utils/steps';
+import { createSteps, getNextStepPath, haveStepsChanged } from 'utils/steps';
+import { deepmerge } from 'utils/objects';
 import { getData, saveData } from 'utils/saveData';
 
 const FormWizard = ({
@@ -29,7 +30,9 @@ const FormWizard = ({
   });
   const steps = createSteps(formSteps);
   const stepPath = `${formPath}[step]`;
-  const step = steps.find(({ id }) => id === stepId);
+  const step = steps.find(
+    ({ id }) => id === (Array.isArray(stepId) ? stepId[0] : stepId)
+  );
   if (!step) {
     process.browser && Router.replace(`${formPath}${formSteps[0].id}`);
     return null;
@@ -54,46 +57,53 @@ const FormWizard = ({
             <h1 className="govuk-fieldset__heading">{title}</h1>
           </legend>
         )}
-        {step.id !== 'summary' && step.id !== 'confirmation' && (
-          <>
-            <Breadcrumbs
-              data={formData}
-              path={formPath}
-              steps={formSteps}
-              currentStepIndex={currentStepIndex}
-            />
-            <legend className="govuk-fieldset__legend govuk-fieldset__legend--m">
-              <h1 className="govuk-fieldset__heading">{step.title}</h1>
-            </legend>
-          </>
-        )}
+        {steps.length > 3 &&
+          step.id !== 'summary' &&
+          step.id !== 'confirmation' && (
+            <>
+              <Breadcrumbs
+                data={formData}
+                path={formPath}
+                steps={formSteps}
+                currentStepIndex={currentStepIndex}
+              />
+              <legend className="govuk-fieldset__legend govuk-fieldset__legend--m">
+                <h1 className="govuk-fieldset__heading">{step.title}</h1>
+              </legend>
+            </>
+          )}
         <StepComponent
-          components={step.components}
+          {...step}
+          key={stepId.join('-')}
+          stepId={stepId}
           formData={formData}
           formSteps={formSteps}
           formPath={formPath}
-          onStepSubmit={(data) => {
-            const updatedData = { ...formData, ...data };
+          onStepSubmit={(data, addAnother) => {
+            const updatedData = deepmerge(formData, data);
             setFormData(updatedData);
             step.onStepSubmit && step.onStepSubmit(updatedData);
-            fromSummary
+            fromSummary &&
+            !haveStepsChanged(formSteps, formData, updatedData) &&
+            !addAnother
               ? Router.push(stepPath, `${formPath}summary`)
               : Router.push(
                   stepPath,
-                  getNextStepPath(
-                    currentStepIndex,
-                    steps,
-                    formPath,
-                    updatedData
-                  )
+                  addAnother
+                    ? `${formPath}${stepId[0]}/${
+                        updatedData[Object.keys(data)[0]]?.length + 1 || 2
+                      }`
+                    : getNextStepPath(
+                        currentStepIndex,
+                        steps,
+                        formPath,
+                        updatedData
+                      )
                 );
           }}
           onSaveAndExit={(data) => {
-            const updateSavedData = {
-              ...formData,
-              ...data,
-            };
-            saveData(formPath, updateSavedData, step.id);
+            const updatedData = deepmerge(formData, data);
+            saveData(formPath, updatedData, stepId.join('/'));
             Router.push('/');
           }}
           onFormSubmit={onFormSubmit}

@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import { formatTime } from 'utils/date';
+import { formatDate } from 'utils/date';
 const onClick = (url) => window.open(url, '_blank');
 
 const CasesEntry = ({
@@ -10,7 +10,7 @@ const CasesEntry = ({
 }) => (
   <tr className="govuk-table__row">
     <td className="govuk-table__cell govuk--timestamp">
-      {caseFormTimestamp && formatTime(caseFormTimestamp)}{' '}
+      {caseFormTimestamp && formatDate(caseFormTimestamp)}{' '}
     </td>
     <td className="govuk-table__cell">{formName}</td>
     <td className="govuk-table__cell">
@@ -28,10 +28,10 @@ const CasesEntry = ({
   </tr>
 );
 
-const CasesTable = ({ cases }) => (
+const CasesTable = ({ records }) => (
   <table className="govuk-table">
     <tbody className="govuk-table__body">
-      {cases.map((result) => (
+      {records.map((result) => (
         <CasesEntry key={result.personId} {...result} />
       ))}
     </tbody>
@@ -39,7 +39,7 @@ const CasesTable = ({ cases }) => (
 );
 
 CasesTable.propTypes = {
-  cases: PropTypes.arrayOf(
+  records: PropTypes.arrayOf(
     PropTypes.shape({
       personId: PropTypes.number.isRequired,
       formName: PropTypes.string.isRequired,

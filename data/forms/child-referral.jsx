@@ -28,6 +28,7 @@ export default {
     {
       id: 'aboutFASTBuisnessSupport',
       title: 'About FAST Business Support team member',
+      conditionalRender: ({ businessSupport }) => businessSupport === 'Yes',
       components: [
         {
           component: 'TextInput',
@@ -74,25 +75,26 @@ export default {
     {
       id: 'childReffered',
       title: 'Child being referred',
+      isMulti: true,
       components: [
         {
           component: 'TextInput',
           name: 'first_name',
           width: '30',
-          label: "Child 1: Child's first name ",
+          label: "Child's first name ",
           rules: { required: true },
         },
         {
           component: 'TextInput',
           name: 'last_name',
           width: '30',
-          label: "Child 1: Child's last name ",
+          label: "Child's last name ",
           rules: { required: true },
         },
         {
           component: 'DateInput',
           name: 'date_of_birth',
-          label: "Child 1: Child's date of birth or EDD for unborns ",
+          label: "Child's date of birth or EDD for unborns ",
           hint: 'For example, 31 03 1980',
           rules: { required: true },
         },
@@ -100,7 +102,7 @@ export default {
           component: 'Radios',
           name: 'gender',
           label:
-            'Child 1: Gender - Which of the following describes how the child thinks of themself?',
+            'Gender - Which of the following describes how the child thinks of themself?',
           options: ['Female', 'Male', 'Not known', 'Other'],
           rules: { required: true },
         },
@@ -108,66 +110,65 @@ export default {
           component: 'TextInput',
           name: 'ethnicity',
           width: '30',
-          label: 'Child 1: Ethnicity ',
+          label: 'Ethnicity ',
         },
         {
           component: 'TextInput',
           name: 'language',
           width: '30',
-          label: 'Child 1: Language ',
+          label: 'Language ',
         },
         {
           component: 'TextInput',
           name: 'school',
           width: '30',
-          label: 'Child 1: School ',
+          label: 'School ',
         },
         {
           component: 'TextInput',
           name: 'address_1',
           width: '30',
-          label: 'Child 1: Home address line 1',
+          label: 'Home address line 1',
         },
         {
           component: 'TextInput',
           name: 'address_2',
           width: '30',
-          label: 'Child 1: Home address line 2',
+          label: 'Home address line 2',
         },
         {
           component: 'TextInput',
           name: 'address_3',
           width: '30',
-          label: 'Child 1: Home address line 3',
+          label: 'Home address line 3',
         },
         {
           component: 'TextInput',
           name: 'post_code',
           width: '30',
-          label: 'Child 1: Postcode',
+          label: 'Postcode',
           rules: { required: true },
         },
+      ],
+    },
+    {
+      id: 'motherQuestion',
+      title: "Mother's details",
+      components: [
         {
           component: 'Radios',
-          name: 'another_child',
-          label: 'Do you need to add details for another child?',
+          name: 'mother_details',
+          label: "Do you have the details of the child(ren)'s mother?",
           options: ['Yes', 'No'],
           rules: { required: true },
         },
       ],
     },
     {
-      id: 'parentDetails',
-      title: 'Parent details',
+      id: 'motherDetails',
+      title: "Mother's full details",
+      conditionalRender: ({ mother_details }) => mother_details === 'Yes',
       components: [
-        {
-          component: 'Radios',
-          name: 'mother_details',
-          label: "Do you have the details of the child(ren)'s mother(s)?",
-          options: ['Yes', 'No'],
-          rules: { required: true },
-        },
-
         {
           component: 'TextInput',
           name: 'mother_fullname',
@@ -216,13 +217,26 @@ export default {
           width: '30',
           label: "Mother's postcode",
         },
+      ],
+    },
+    {
+      id: 'fatherQuestion',
+      title: "Father's details",
+      components: [
         {
           component: 'Radios',
           name: 'father_details',
-          label: "Do you have the details of the child(ren)'s father(s)?",
+          label: "Do you have the details of the child(ren)'s father?",
           options: ['Yes', 'No'],
           rules: { required: true },
         },
+      ],
+    },
+    {
+      id: 'fatherDetails',
+      title: "Father's full details",
+      conditionalRender: ({ father_details }) => father_details === 'Yes',
+      components: [
         {
           component: 'TextInput',
           name: 'father_fullname',
@@ -251,19 +265,19 @@ export default {
           component: 'TextInput',
           name: 'father_address_1',
           width: '30',
-          label: "Father's address line 1",
+          label: "Father's address line",
         },
         {
           component: 'TextInput',
           name: 'father_address_2',
           width: '30',
-          label: "Father's address line 2",
+          label: "Father's address line",
         },
         {
           component: 'TextInput',
           name: 'father_address_3',
           width: '30',
-          label: "Father's address line  3",
+          label: "Father's address line",
         },
         {
           component: 'TextInput',
@@ -274,85 +288,87 @@ export default {
       ],
     },
     {
-      id: 'additionalFamilyMembers',
-      title: 'Additional Family Members',
+      id: 'additionalFamilyMembersQuestion',
+      title: 'Additional Family Members Details',
       components: [
         {
           component: 'Radios',
-          name: 'mother_details',
+          name: 'family_details',
           label: "Do you have the details of any additional family member's ?",
-          options: ['Yes', 'No'],
-        },
-        <h3 key="text1" className="govuk-body">
-          Details of wider family network
-        </h3>,
-        {
-          component: 'TextInput',
-          name: 'wider_family_fullname_1',
-          width: '30',
-          label: 'Name of individual (1) ',
-          rules: { required: true },
-        },
-        {
-          component: 'DateInput',
-          name: 'wider_family__DOB_1',
-          label: 'Individual (1) date of birth',
-          hint: 'For example, 31 03 1980',
-        },
-        {
-          component: 'TextInput',
-          name: 'wider_family_relationship_1',
-          width: '30',
-          label:
-            'Role/relationship (specify which child or family member) - individual (1) ',
-        },
-        {
-          component: 'PhoneInput',
-          name: 'wider_family_telephone_1',
-          width: '30',
-          label: 'Telephone number - individual (1)',
-        },
-        {
-          component: 'EmailInput',
-          name: 'wider_family_email_1',
-          width: '30',
-          label: 'Email address - individual (1)',
-        },
-        {
-          component: 'TextInput',
-          name: 'wider_family_address_1',
-          width: '30',
-          label: 'Address line 1 - individual (1)',
-        },
-        {
-          component: 'TextInput',
-          name: 'wider_family_address_2',
-          width: '30',
-          label: 'Address line 2 - individual (1)',
-        },
-        {
-          component: 'TextInput',
-          name: 'wider_family_address_3',
-          width: '30',
-          label: 'Address line 3 - individual (1)',
-        },
-        {
-          component: 'TextInput',
-          name: 'wider_family_postcode_1',
-          width: '30',
-          label: 'Postcode - individual (1)',
-        },
-        {
-          component: 'Radios',
-          name: 'any_additional_family_members',
-          label: 'Any additional family members?',
           options: ['Yes', 'No'],
           rules: { required: true },
         },
       ],
     },
     {
-      id: 'professionalsOrAgencies',
+      id: 'additionalFamilyMembersDetails',
+      title: 'Additional Family Members Full Details',
+      isMulti: true,
+      conditionalRender: ({ family_details }) => family_details === 'Yes',
+      components: [
+        <h3 key="text1" className="govuk-body">
+          Details of wider family network
+        </h3>,
+        {
+          component: 'TextInput',
+          name: 'wider_family_fullname',
+          width: '30',
+          label: 'Name of individual ',
+          rules: { required: true },
+        },
+        {
+          component: 'DateInput',
+          name: 'wider_family__DOB',
+          label: 'Individual date of birth',
+          hint: 'For example, 31 03 1980',
+        },
+        {
+          component: 'TextInput',
+          name: 'wider_family_relationship',
+          width: '30',
+          label:
+            'Role/relationship (specify which child or family member) - individual ',
+        },
+        {
+          component: 'PhoneInput',
+          name: 'wider_family_telephone',
+          width: '30',
+          label: 'Telephone number',
+        },
+        {
+          component: 'EmailInput',
+          name: 'wider_family_email',
+          width: '30',
+          label: 'Email address',
+        },
+        {
+          component: 'TextInput',
+          name: 'wider_family_address_1',
+          width: '30',
+          label: 'Address line 1',
+        },
+        {
+          component: 'TextInput',
+          name: 'wider_family_address_2',
+          width: '30',
+          label: 'Address line 2',
+        },
+        {
+          component: 'TextInput',
+          name: 'wider_family_address_3',
+          width: '30',
+          label: 'Address line 3',
+        },
+        {
+          component: 'TextInput',
+          name: 'wider_family_postcode_1',
+          width: '30',
+          label: 'Postcode',
+        },
+      ],
+    },
+    {
+      id: 'professionalsOrAgenciesQuestion',
       title: 'Professionals or agencies',
       components: [
         {
@@ -361,7 +377,17 @@ export default {
           label:
             'Do you have any details of any other professionals or agencies working with the family: ?',
           options: ['Yes', 'No'],
+          rules: { required: true },
         },
+      ],
+    },
+    {
+      id: 'professionalsOrAgenciesDetails',
+      title: 'Professionals or agencies details',
+      isMulti: true,
+      conditionalRender: ({ professionals_details }) =>
+        professionals_details === 'Yes',
+      components: [
         <h3 key="text2" className="govuk-body">
           Details of any other professionals or agencies working with the
           family:
@@ -374,7 +400,7 @@ export default {
           component: 'TextInput',
           name: 'professional_name',
           width: '30',
-          label: 'Name of professional (1)',
+          label: 'Name of professional',
           rules: { required: true },
         },
         {
@@ -382,57 +408,50 @@ export default {
           name: 'professional_relationship',
           width: '30',
           label:
-            'Relationship of the professional to the child and family - professional (1)',
+            'Relationship of the professional to the child and family - professional',
         },
 
         {
           component: 'PhoneInput',
-          name: 'professional_telephone_1',
+          name: 'professional_telephone',
           width: '30',
-          label: 'Telephone number - professional (1)',
+          label: 'Telephone number ',
         },
         {
           component: 'EmailInput',
-          name: 'professional_email_1',
+          name: 'professional_email',
           width: '30',
-          label: 'Email address - professional (1)',
+          label: 'Email address',
         },
         {
           component: 'TextInput',
-          name: 'professional_address_1',
+          name: 'professional_address',
           width: '30',
-          label: 'Address line 1 - professional (1)',
+          label: 'Address line 1',
         },
         {
           component: 'TextInput',
           name: 'professional_address_2',
           width: '30',
-          label: 'Address line 2 - professional (1)',
+          label: 'Address line 2',
         },
         {
           component: 'TextInput',
           name: 'professional_address_3',
           width: '30',
-          label: 'Address line 3 - professional (1)',
+          label: 'Address line 3',
         },
         {
           component: 'TextInput',
           name: 'professional_postcode_1',
           width: '30',
-          label: 'Postcode - professional (1)',
+          label: 'Postcode',
         },
         {
           component: 'Radios',
           name: 'professional_consent',
           label:
-            'Professional (1): Has the person with parental responsibility consented for Hackney to make contact with this person or agency?',
-          options: ['Yes', 'No'],
-        },
-        {
-          component: 'Radios',
-          name: 'professional_other',
-          label:
-            'Do you have any more information about additional professionals working with the family',
+            'Professional: Has the person with parental responsibility consented for Hackney to make contact with this person or agency?',
           options: ['Yes', 'No'],
           rules: { required: true },
         },
@@ -488,11 +507,13 @@ export default {
           Please note, parental consent is always required for families to be
           referred to an early help intervention.{' '}
         </p>,
+
         {
           component: 'Radios',
           name: 'additionalSupport',
           label: 'Are the parents/carers open to additional support?',
           options: ['Yes', 'No'],
+          rules: { required: true },
         },
         <p key="text7" className="govuk-body">
           Please note, referrers are always expected to discuss their requests
@@ -528,7 +549,7 @@ export default {
           your behalf.{' '}
         </p>,
         {
-          component: 'yourInvolvement',
+          component: 'TextInput',
           name: 'Your Involvemnt',
           width: '30',
           label:
@@ -539,7 +560,7 @@ export default {
           completed by your agency, please attach a copy alongside this referral
         </p>,
         {
-          component: 'earlySupport',
+          component: 'TextInput',
           name: 'Early Support',
           width: '30',
           label:
