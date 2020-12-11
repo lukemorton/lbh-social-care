@@ -31,6 +31,7 @@ const FormWizard = ({
   const stepPath = `${formPath}[step]`;
   const step = steps.find(({ id }) => id === stepId);
   if (!step) {
+    process.browser && Router.replace(`${formPath}${formSteps[0].id}`);
     return null;
   }
   const currentStepIndex = steps.findIndex(({ id }) => id === step.id);
