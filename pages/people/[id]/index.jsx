@@ -2,9 +2,9 @@ import { NextSeo } from 'next-seo';
 
 import Cases from 'components/Cases/Cases';
 import BackButton from 'components/Layout/BackButton/BackButton';
-import LinkButton from 'components/LinkButton/LinkButton';
 import PersonView from 'components/PersonView/PersonView';
 
+// hiding create new record as production isn't ready
 const CasesPage = ({ query }) => {
   return (
     <div>
@@ -20,7 +20,7 @@ const CasesPage = ({ query }) => {
             Linked files are read only
           </p>
         </div>
-        <LinkButton label="Add a new record" route={`${query.id}/record`} />
+        {/* <LinkButton label="Add a new record" route={`${query.id}/record`} /> */}
       </div>
       <hr className="govuk-divider" />
       <Cases {...query} />
