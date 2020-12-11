@@ -11,6 +11,8 @@ const DynamicInput = ({
   ...otherProps
 }) => {
   const Component = Inputs[component];
+  if (!Component)
+    throw new Error(`"${component}" is not a supported component type.`);
   const sharedProps = {
     name: name,
     error: errors[name],
